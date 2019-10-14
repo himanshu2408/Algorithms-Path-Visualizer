@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { PathVisualizerComponent } from './path-visualizer/path-visualizer.component';
 import { NodeComponent } from './node/node.component';
 import { AlgorithmsService } from './algorithms.service';
+import { CommunicationService } from './communication.service';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { AlgorithmsService } from './algorithms.service';
   imports: [
     BrowserModule
   ],
-  providers: [AlgorithmsService],
+  providers: [AlgorithmsService, CommunicationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

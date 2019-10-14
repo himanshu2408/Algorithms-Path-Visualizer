@@ -1,5 +1,3 @@
-<button type="button" class="btn btn-primary" (click)="runDijkstra()">Run Dijkstra</button>
-<button type="button" class="btn btn-primary" (click)="clearGrid()">Clear Grid</button>
 <div id="grid">
   <div *ngFor="let row of gridProperties">
     <app-node *ngFor="let node of row" [node]="node"></app-node>

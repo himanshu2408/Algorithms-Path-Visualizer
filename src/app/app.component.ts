@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommunicationService } from './communication.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Path-Visualizer';
+  constructor(private communicationService: CommunicationService) {  }
+
+  runDijkstra() {
+    this.communicationService.fireDijkstra();
+  }
+
+  refreshGrid() {
+    this.communicationService.refreshGrid();
+  }
+
+  selectStart() {
+    this.communicationService.selectStart();
+  }
+
+  selectFinish() {
+    this.communicationService.selectFinish();
+  }
 }

@@ -1,1 +1,1 @@
-<div id="node-{{node.row}}-{{node.col}}" class="node {{extraClassName}}"></div>
+<div id="node-{{node.row}}-{{node.col}}" class="node {{extraClassName}}" [ngClass]="{'select-start': isSelectStart, 'select-finish': isSelectFinish}" (click)="nodeClicked(node)"></div>

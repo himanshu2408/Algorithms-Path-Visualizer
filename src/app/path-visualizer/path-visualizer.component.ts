@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Node } from '../node';
 import { AlgorithmsService } from '../algorithms.service';
-import { setTimeout } from 'timers';
+import { CommunicationService } from '../communication.service';
 
-const START_NODE_ROW = 15;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 20;
-const FINISH_NODE_COL = 45;
 const TOTAL_ROWS = 25;
 const TOTAL_COLS = 50;
 
@@ -17,11 +13,47 @@ const TOTAL_COLS = 50;
 })
 
 export class PathVisualizerComponent implements OnInit {
-  constructor(private algorithmsService: AlgorithmsService) { }
-
+  startNodeRow = 15;
+  startNodeCol = 15;
+  finishNodeRow = 20;
+  finishNodeCol = 45;
   gridProperties = [];
+
+  constructor(private algorithmsService: AlgorithmsService, private communicationService: CommunicationService) {
+    this.communicationService.dijkstraFired.subscribe(() => {
+      this.runDijkstra();
+    });
+
+    this.communicationService.refreshGridFired.subscribe(() => {
+      this.refreshGrid();
+    });
+
+    this.communicationService.startSelectedFired.subscribe((node) => {
+      this.startSelected(node);
+    });
+
+    this.communicationService.finishSelectedFired.subscribe((node) => {
+      this.finishSelected(node);
+    });
+
+  }
+
   ngOnInit() {
     this.generateGrid(TOTAL_ROWS, TOTAL_COLS);
+  }
+
+  startSelected(node) {
+    document.getElementById(`node-${this.startNodeRow}-${this.startNodeCol}`).className = 'node';
+    this.startNodeRow = node.row;
+    this.startNodeCol = node.col;
+    document.getElementById(`node-${this.startNodeRow}-${this.startNodeCol}`).className = 'node node-start';
+  }
+
+  finishSelected(node) {
+    document.getElementById(`node-${this.finishNodeRow}-${this.finishNodeCol}`).className = 'node';
+    this.finishNodeRow = node.row;
+    this.finishNodeCol = node.col;
+    document.getElementById(`node-${this.finishNodeRow}-${this.finishNodeCol}`).className = 'node node-finish';
   }
 
   generateGrid(rows, cols) {
@@ -35,23 +67,17 @@ export class PathVisualizerComponent implements OnInit {
 
     }
   }
-
-  renderGrid() {
-    document.getElementById('grid').innerHTML = `
-      
-      `;
-  }
-
-  clearGrid() {
-    this.generateGrid(TOTAL_ROWS, TOTAL_COLS);
+ 
+  refreshGrid() {
+    window.location.reload();
   }
 
   createNode(row, col) {
     let node: Node = {
       row,
       col,
-      isStart: row === START_NODE_ROW && col === START_NODE_COL,
-      isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+      isStart: row === this.startNodeRow && col === this.startNodeCol,
+      isFinish: row === this.finishNodeRow && col === this.finishNodeCol,
       distance: Infinity,
       isVisited: false,
       isWall: false,
@@ -61,9 +87,9 @@ export class PathVisualizerComponent implements OnInit {
   }
 
   runDijkstra() {
-    let visitedNodesInOrder: Node[] = this.algorithmsService.dijkstra(this.gridProperties, this.gridProperties[START_NODE_ROW][START_NODE_COL], this.gridProperties[FINISH_NODE_ROW][FINISH_NODE_COL]);
+    let visitedNodesInOrder: Node[] = this.algorithmsService.dijkstra(this.gridProperties, this.gridProperties[this.startNodeRow][this.startNodeCol], this.gridProperties[this.finishNodeRow][this.finishNodeCol]);
     console.log(visitedNodesInOrder);
-    let nodesInShortestPathOrder = this.algorithmsService.getNodesInShortestPathOrder(this.gridProperties[FINISH_NODE_ROW][FINISH_NODE_COL]);
+    let nodesInShortestPathOrder = this.algorithmsService.getNodesInShortestPathOrder(this.gridProperties[this.finishNodeRow][this.finishNodeCol]);
     this.visualizeDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 

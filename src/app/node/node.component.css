@@ -1,11 +1,12 @@
 .node {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   outline: 1px solid grey;
   display: inline-block;
+  cursor: pointer;
 }
 
-.node-visited{
+.node-visited {
   background-color: lightskyblue;
 }
 
@@ -15,9 +16,21 @@
 }
 
 .node-start {
-  background-color: lightgreen;
+  background-image: url('../../assets/images/mario.png');
+  background-size: 25px 25px;
 }
 
 .node-finish {
-  background-color: maroon;
+  background-image: url('../../assets/images/princess.png');
+  background-size: 25px 25px;
+}
+
+.select-start:hover {
+  background-image: url('../../assets/images/mario.png');
+  background-size: 25px 25px;
+}
+
+.select-finish:hover {
+  background-image: url('../../assets/images/princess.png');
+  background-size: 25px 25px;
 }

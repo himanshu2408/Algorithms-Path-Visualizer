@@ -1,0 +1,5 @@
+<div id="grid">
+  <div *ngFor="let row of gridProperties">
+    <app-node *ngFor="let node of row" [node]="node"></app-node>
+  </div>
+</div>

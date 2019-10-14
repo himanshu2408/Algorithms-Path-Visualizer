@@ -5,6 +5,15 @@
   display: inline-block;
 }
 
+.node-visited{
+  background-color: lightskyblue;
+}
+
+
+.node-shortest-path {
+  background-color: darkseagreen;
+}
+
 .node-start {
   background-color: lightgreen;
 }

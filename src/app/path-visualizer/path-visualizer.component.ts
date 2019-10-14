@@ -7,8 +7,8 @@ const START_NODE_ROW = 15;
 const START_NODE_COL = 15;
 const FINISH_NODE_ROW = 20;
 const FINISH_NODE_COL = 45;
-const TOTAL_ROWS = 30;
-const TOTAL_COLS = 60;
+const TOTAL_ROWS = 25;
+const TOTAL_COLS = 50;
 
 @Component({
   selector: 'app-path-visualizer',
@@ -63,16 +63,32 @@ export class PathVisualizerComponent implements OnInit {
   runDijkstra() {
     let visitedNodesInOrder: Node[] = this.algorithmsService.dijkstra(this.gridProperties, this.gridProperties[START_NODE_ROW][START_NODE_COL], this.gridProperties[FINISH_NODE_ROW][FINISH_NODE_COL]);
     console.log(visitedNodesInOrder);
-    this.visualizeDijkstra(visitedNodesInOrder);
+    let nodesInShortestPathOrder = this.algorithmsService.getNodesInShortestPathOrder(this.gridProperties[FINISH_NODE_ROW][FINISH_NODE_COL]);
+    this.visualizeDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
-  visualizeDijkstra(visitedNodesInOrder: Node[]) {
-    visitedNodesInOrder.forEach(node => {
+  visualizeDijkstra(visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.visualizeShortestPath(nodesInShortestPathOrder);
+        }, 5 * i);
+        return;
+      }
+
       setTimeout(() => {
-        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
-      }, 50);
-    });
+        document.getElementById(`node-${visitedNodesInOrder[i].row}-${visitedNodesInOrder[i].col}`).className += ' node-visited';
+      }, 5 * i);
+    };
   }
 
-
+  visualizeShortestPath(nodesInShortestPathOrder) {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className +=
+          ' node-shortest-path';
+      }, 30 * i);
+    }
+  }
 }
